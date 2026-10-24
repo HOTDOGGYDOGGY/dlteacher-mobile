@@ -60,12 +60,14 @@ const q = (s) => encodeURIComponent(s);
 
 // ---------- 데이터 ----------
 let index = null;
+let syncFolderId = null;
 const state = { view: localStorage.getItem("view") || "library", shelf: "", genre: "", search: "" };
 
 async function loadIndex() {
   $("#status").textContent = "불러오는 중…";
   const found = await api(`/files?q=${q(`name='${SYNC_FOLDER}' and mimeType='application/vnd.google-apps.folder' and trashed=false`)}&fields=files(id)`);
   const folder = found.files?.[0]?.id;
+  syncFolderId = folder;
   if (!folder) throw new Error("드라이브에 동기화 폴더가 없어요. PC 확장에서 먼저 '구글 계정 연결'을 해 주세요");
   const idx = await api(`/files?q=${q(`name='index.json' and '${folder}' in parents and trashed=false`)}&fields=files(id)`);
   if (!idx.files?.[0]) throw new Error("아직 동기화된 내용이 없어요");
@@ -180,6 +182,11 @@ async function openScrap(p) {
 // ---------- 그림 (구글 드라이브 PC 앱이 올린 DownloadTeacher 폴더) ----------
 const gal = { stack: [], next: null, loading: false };
 async function galRoot() {
+  // 확장이 고른 그림만 올린 "그림" 폴더가 있으면 그것, 없으면 구글 드라이브 PC 앱이 올린 DownloadTeacher 폴더
+  if (syncFolderId) {
+    const own = await api(`/files?q=${q(`name='그림' and '${syncFolderId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`)}&fields=files(id)`);
+    if (own.files?.[0]) return { id: own.files[0].id, name: "그림" };
+  }
   const name = (index.rootFolder || "DownloadTeacher").split("/").pop();
   const r = await api(`/files?q=${q(`name='${name}' and mimeType='application/vnd.google-apps.folder' and trashed=false`)}&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc`);
   if (!r.files?.length) throw new Error(`드라이브에 "${name}" 폴더가 없어요. 구글 드라이브 PC 앱으로 다운로드 폴더의 ${name}을 올려 주세요`);
