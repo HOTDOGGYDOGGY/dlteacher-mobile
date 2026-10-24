@@ -1,6 +1,6 @@
 {
-  "name": "다운로드 선생님",
-  "short_name": "다운로드 선생님",
+  "name": "OtakuManager",
+  "short_name": "OtakuManager",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

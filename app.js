@@ -1,12 +1,12 @@
-// 다운로드 선생님 폰 보기: 확장이 구글 드라이브의 "DownloadTeacher 동기화" 폴더에 올린 서재·스크랩과,
-// 구글 드라이브 PC 앱이 올린 DownloadTeacher 폴더의 그림을 읽기만 한다 (drive.readonly). 내 데이터는 드라이브에만 있고 이 페이지에는 코드뿐.
+// OtakuManager 폰 보기: 확장이 구글 드라이브의 "OtakuManager 동기화" 폴더에 올린 서재·스크랩과,
+// 구글 드라이브 PC 앱이 올린 OtakuManager 폴더의 그림을 읽기만 한다 (drive.readonly). 내 데이터는 드라이브에만 있고 이 페이지에는 코드뿐.
 // 처음 열 때 주소 끝의 #client=<구글 클라이언트 ID>를 기억한다 (확장의 "폰에서 보기"에서 복사한 주소).
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
 const API = "https://www.googleapis.com/drive/v3";
 const SCOPE = "https://www.googleapis.com/auth/drive.readonly";
-const SYNC_FOLDER = "DownloadTeacher 동기화";
+const SYNC_FOLDERS = ["OtakuManager 동기화", "DownloadTeacher 동기화"]; // 예전 이름도
 
 // ---------- 설정·로그인 ----------
 const hashClient = new URLSearchParams(location.hash.slice(1)).get("client");
@@ -65,7 +65,7 @@ const state = { view: localStorage.getItem("view") || "library", shelf: "", genr
 
 async function loadIndex() {
   $("#status").textContent = "불러오는 중…";
-  const found = await api(`/files?q=${q(`name='${SYNC_FOLDER}' and mimeType='application/vnd.google-apps.folder' and trashed=false`)}&fields=files(id)`);
+  const found = await api(`/files?q=${q(`(${SYNC_FOLDERS.map((n) => `name='${n}'`).join(" or ")}) and mimeType='application/vnd.google-apps.folder' and trashed=false`)}&fields=files(id)`);
   const folder = found.files?.[0]?.id;
   syncFolderId = folder;
   if (!folder) throw new Error("드라이브에 동기화 폴더가 없어요. PC 확장에서 먼저 '구글 계정 연결'을 해 주세요");
@@ -179,15 +179,15 @@ async function openScrap(p) {
   $("#sFrame").srcdoc = await blob.text();
 }
 
-// ---------- 그림 (구글 드라이브 PC 앱이 올린 DownloadTeacher 폴더) ----------
+// ---------- 그림 (구글 드라이브 PC 앱이 올린 OtakuManager 폴더) ----------
 const gal = { stack: [], next: null, loading: false };
 async function galRoot() {
-  // 확장이 고른 그림만 올린 "그림" 폴더가 있으면 그것, 없으면 구글 드라이브 PC 앱이 올린 DownloadTeacher 폴더
+  // 확장이 고른 그림만 올린 "그림" 폴더가 있으면 그것, 없으면 구글 드라이브 PC 앱이 올린 OtakuManager 폴더
   if (syncFolderId) {
     const own = await api(`/files?q=${q(`name='그림' and '${syncFolderId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`)}&fields=files(id)`);
     if (own.files?.[0]) return { id: own.files[0].id, name: "그림" };
   }
-  const name = (index.rootFolder || "DownloadTeacher").split("/").pop();
+  const name = (index.rootFolder || "OtakuManager").split("/").pop();
   const r = await api(`/files?q=${q(`name='${name}' and mimeType='application/vnd.google-apps.folder' and trashed=false`)}&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc`);
   if (!r.files?.length) throw new Error(`드라이브에 "${name}" 폴더가 없어요. 구글 드라이브 PC 앱으로 다운로드 폴더의 ${name}을 올려 주세요`);
   return { id: r.files[0].id, name: r.files[0].name };

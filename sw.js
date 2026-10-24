@@ -1,5 +1,5 @@
 // 홈 화면 앱으로 열 수 있게 화면 파일만 보관 (내용은 늘 드라이브에서)
-const CACHE = "dlteacher-v1";
+const CACHE = "dlteacher-v2";
 const SHELL = ["./", "index.html", "app.js", "style.css", "icon.png", "manifest.webmanifest"];
 self.addEventListener("install", (e) => e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL))));
 self.addEventListener("activate", (e) => e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k))))));
