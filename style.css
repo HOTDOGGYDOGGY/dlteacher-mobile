@@ -1,0 +1,371 @@
+:root {
+  --bg: #f4f5f7;
+  --card: #fff;
+  --text: #1c1d21;
+  --sub: #6b7280;
+  --line: #e5e7eb;
+  --accent: #0096fa;
+  --accent-soft: #e6f4ff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111317;
+    --card: #1b1e24;
+    --text: #e8eaed;
+    --sub: #9aa1ab;
+    --line: #2b2f37;
+    --accent-soft: #0b2b44;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 -apple-system, "Pretendard", "Malgun Gothic", system-ui, sans-serif;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+button {
+  font: inherit;
+  color: inherit;
+}
+.muted {
+  color: var(--sub);
+}
+.center {
+  text-align: center;
+}
+[hidden] {
+  display: none !important;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: calc(env(safe-area-inset-top) + 10px) 12px 10px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+.top b {
+  flex: none;
+  font-size: 17px;
+}
+.top input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+.top button {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg);
+  font-size: 17px;
+}
+main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px 20px;
+}
+.tabs {
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--card);
+  border-top: 1px solid var(--line);
+}
+.tabs button {
+  flex: 1;
+  height: 52px;
+  border: 0;
+  background: none;
+  color: var(--sub);
+  font-weight: 600;
+}
+.tabs button.on {
+  color: var(--accent);
+}
+
+#login {
+  padding-top: 18vh;
+}
+#login img {
+  border-radius: 18px;
+}
+button.primary {
+  height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+}
+.chip {
+  flex: none;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  font-size: 13px;
+}
+.chip.on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.list li {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+.list .t {
+  font-weight: 700;
+}
+.list .sub {
+  font-size: 13px;
+  color: var(--sub);
+}
+.list .meta {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--sub);
+}
+.list li.scrap {
+  display: flex;
+  gap: 12px;
+}
+.scrap img,
+.scrap .noimg {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--bg);
+}
+.cat {
+  margin-right: 6px;
+  padding: 0 6px;
+  border-radius: 5px;
+  background: var(--bg);
+  color: var(--sub);
+  font-size: 12px;
+}
+.genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.genres span {
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.path {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+.path button {
+  flex: none;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-size: 13px;
+  padding: 2px 4px;
+}
+.path button:not(:last-child)::after {
+  content: " ›";
+  color: var(--sub);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 4px;
+}
+.tile {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--card);
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+}
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tile.folder {
+  aspect-ratio: auto;
+  min-height: 72px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  gap: 2px;
+  font-size: 22px;
+}
+.tile.folder b {
+  font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.tile .play {
+  position: absolute;
+  inset: auto 6px 6px auto;
+  font-size: 12px;
+  color: #fff;
+  text-shadow: 0 1px 3px #000;
+  font-style: normal;
+}
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+.sheet.dark {
+  background: #000;
+  color: #fff;
+}
+.sheet-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: calc(env(safe-area-inset-top) + 8px) 10px 8px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+.sheet.dark .sheet-head {
+  background: #000;
+  border-color: #222;
+}
+.sheet-head b {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.back {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: none;
+  font-size: 20px;
+}
+.sheet-head select,
+#rChapter {
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+}
+.sheet-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px 40px;
+}
+#rChapter {
+  width: 100%;
+  margin: 8px 0 4px;
+}
+#rText {
+  font-size: 17px;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+#rText p {
+  margin: 0 0 1em;
+}
+#rText .pair {
+  margin-bottom: 1.2em;
+}
+#rText .pair .o {
+  margin: 0 0 0.3em;
+  color: var(--sub);
+  font-size: 0.9em;
+}
+#rText .pair p:not(.o) {
+  margin: 0;
+}
+.rnav {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.rnav button {
+  flex: 1;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+}
+.rnav button:disabled {
+  opacity: 0.4;
+}
+#sFrame {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: #fff;
+}
+.photo-box {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+}
+.photo-box img,
+.photo-box video {
+  max-width: 100%;
+  max-height: 100%;
+}

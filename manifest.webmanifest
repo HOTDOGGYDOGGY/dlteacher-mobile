@@ -1,0 +1,10 @@
+{
+  "name": "다운로드 선생님",
+  "short_name": "다운로드 선생님",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f5f7",
+  "theme_color": "#0096fa",
+  "icons": [{ "src": "icon.png", "sizes": "128x128", "type": "image/png" }]
+}
